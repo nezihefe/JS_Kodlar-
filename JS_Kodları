@@ -1,0 +1,308 @@
+Project Euler Soruları
+Problemin Numarası : 9
+Problemin  Adı : Special Pythagorean Triplet 
+Javascript Sonucu:
+a: 200 b: 375 c: 425
+31875000
+Javascript Kodları :
+var a = 1;
+var b = 2;
+var c = Math.sqrt(a * a + b * b);
+var toplam = a + b + c;
+while (toplam != 1000) {
+  if (toplam > 1000) {
+    a++;
+    b = a + 1;
+  } else {
+    b++;
+  }
+  c = Math.sqrt(a * a + b * b);
+  toplam = a + b + c;
+}
+console.log('a:' + a + '  b:' + b + '  c:' + c);
+console.log(a * b * c);
+
+--------------------------------------------------------------------------------------------------------------------------
+Problemin Numarası : 19
+Problemin  Adı : Counting Sundays
+Javascript Sonucu:
+171
+Javascript Kodları :
+var strSonuc = '<br />1'inci Pazar günleri: ';
+var AyIcinde = [0,31,0,31,30,31,30,31,31,30,31,30,31];
+function IcindeSubat(Yıl) {
+    if (Yıl % 4 != 0) return 28;
+    if (Yıl % 100 == 0 && Yıl % 400 != 0) return 28;
+    return 29;
+}
+function PazarHesapla() {
+    var Gün = 1;
+    var IcındePazar = 0;
+    for (var Ay = 0; ++Ay < 13;) {
+                Gün += (Ay == 2) ? IcindeSubat(1900) : AyIcinde[Ay];
+    }
+    for (var Yıl = 1900; ++Yıl < 2001;) {    
+        for (Ay = 0; ++Ay < 13;) {
+            if (Gün % 7 == 0) IcındePazar++;
+            Gün += (Ay == 2) ? IcindeSubat(Yıl) : AyIcinde[Ay];
+        }
+    }
+    return IcındePazar;
+}
+strSonuc += PazarHesapla();       
+
+--------------------------------------------------------------------------------------------------------------------------Problemin Numarası : 29
+Problemin  Adı : Distinct powers
+Javascript Sonucu:
+15
+Javascript Kodları :
+var buyukSayi = {};
+buyukSayi.createFromNumber = function(sayi){
+    var b_sayi = [sayi];
+    buyukSayi.rebalanceDigitArray(b_sayi);
+    return b_sayi;
+};
+buyukSayi.digitArrayMultiply = function(basamak1, basamak2) {
+    var productDigits = [];
+    for (var i = 0; i < basamak1.length; i++) {
+        digit1 = basamak1[i];
+        for (var j = 0; j < basamak2.length; j++) {
+            digit2 = basamak2[j];
+            var product = digit1 * digit2;
+            var productIndex = i + j;
+            
+            productDigits[productIndex] = (productDigits[productIndex] || 0) + product;
+            buyukSayi.rebalanceDigitArray(productDigits, productIndex);
+        }
+    }
+    
+    return productDigits;
+};
+buyukSayi.digitArrayAdd = function(basamak1, basamak2) {
+    var toplam_basamak = [];
+    var length = basamak1.length > basamak2.length ? basamak1.length : basamak2.length;
+    
+    for(var i = 0; i < length; i++){
+        toplam_basamak[i] = (basamak1[i] || 0) + (basamak2[i] || 0) + (toplam_basamak[i] || 0);
+        buyukSayi.rebalanceDigitArray(toplam_basamak, i);
+    }
+    
+    return toplam_basamak;
+}; 
+
+buyukSayi.equals = function(sayi1, sayi2){
+    if(!sayi1 || !sayi2 || (sayi1.length != sayi2.length)){
+        return false;
+    }
+    
+    for(var i = 0; i < sayi1.length; i++){
+        if(sayi1[i] != sayi2[i]){
+            return false;
+        }
+    }
+    return true;
+};
+
+buyukSayi.rebalanceDigitArray = function(digits, index){
+    index = index || 0;
+    var digit = digits[index];
+    while(digit > 9){        
+        digits[index] = digit % 10;  
+                index++;
+        digits[index] = digit = (digits[index] || 0) + ((digit - digit % 10) / 10);
+    }
+};
+var getDistinctPowers = function(max) {
+    var results = [];
+    for(var a = 2; a <= max; a++){
+        for(var b = 2; b <= max; b++){
+            var num = buyukSayi.createFromNumber(a);
+            var result = buyukSayi.createFromNumber(a);
+            
+            for(var i = 1; i < b; i++){
+                result = buyukSayi.digitArrayMultiply(result, num);
+            }            
+            results.push(result);
+        }
+    }
+  results.sort();
+    
+    for(var i = 0, result; result = results[i]; i++){
+        while(buyukSayi.equals(result, results[i+1])){
+            results.splice(i+1, 1);
+        }
+    }
+    return results.length;
+};
+console.log(getDistinctPowers(5));
+console.log(getDistinctPowers(100));
+
+--------------------------------------------------------------------------------------------------------------------------Problemin Numarası : 39
+Problemin  Adı : Integer Right Triangles
+Javascript Sonucu:
+840
+Javascript Kodları :
+var maxKombinasyonlar = 0;
+var maxKombinasyonlarCevresi = 0;
+for(var Cevre = 0; Cevre <= 1000; Cevre++)
+{
+    var kombinasyonlar = CevreKombinasyonSayimlari[Cevre];
+    if(kombinasyonlar && kombinasyonlar > maxKombinasyonlar)
+{
+        console.log('Cevre: ' + Cevre + '  kombinasyonlar: ' + kombinasyonlar);
+        maxKombinasyonlar = kombinasyonlar;
+        maxKombinasyonlarCevresi = Cevre;
+    }        
+}
+        
+console.log(maxKombinasyonlarCevresi);
+
+--------------------------------------------------------------------------------------------------------------------------
+Problemin Numarası : 49
+Problemin  Adı : Highly divisible triangular number
+Javascript Sonucu:
+28
+Javascript Kodları :
+var maxKombinasyonlar = 0;
+var maxKombinasyonlarCevresi = 0;
+for(var Cevre = 0; Cevre <= 1000; Cevre++)
+{
+    var kombinasyonlar = CevreKombinasyonSayimlari[Cevre];
+    if(kombinasyonlar && kombinasyonlar > maxKombinasyonlar)
+{
+        console.log('Cevre: ' + Cevre + '  kombinasyonlar: ' + kombinasyonlar);
+        maxKombinasyonlar = kombinasyonlar;
+        maxKombinasyonlarCevresi = Cevre;
+    }        
+}
+        
+console.log(maxKombinasyonlarCevresi);
+
+
+
+
+
+Leet Code Soruları
+Problemin Numarası : 9
+Problemin  Adı : Palindrome Number   
+Javascript Sonucu:
+121
+Javascript Kodları :
+var isPalindrome = function(x) {
+    let strArr = Array.from(String(x))
+    let i = 0;
+    let j = strArr.length - 1;
+    
+    while (i <= j) {        
+        if (strArr[i] !== strArr[j]) {
+            return false
+        }
+        i++;
+        j--
+    }
+    return true
+};
+
+--------------------------------------------------------------------------------------------------------------------------
+Problemin Numarası : 19
+Problemin  Adı : Remove Nth Node From End of List
+Javascript Sonucu:
+Sayıya göre sonuç değişiklik göstermektedir.
+Javascript Kodları :
+var removeNthFromEnd = function(head, n) {
+    
+    const helper = (node)=>{
+        if(node.next){
+            const [fromend, lastnode] = helper(node.next);
+            if(n === fromend + 1) return [fromend+1, lastnode]; 
+            node.next = lastnode;
+            return [fromend+1, node];
+        }else{
+            if(n === 1) return [1, null];
+            return [1, node];
+        }
+    }
+  
+    const [len] = helper(head);
+    if(len === n) return head.next;
+
+    return head;
+};
+
+--------------------------------------------------------------------------------------------------------------------------
+Problemin Numarası : 29
+Problemin  Adı : Divide Two Integers
+Javascript Sonucu:
+Sayıya göre sonuç değişiklik göstermektedir.
+Javascript Kodları :
+var bolme = function(bolunen_sayi, bolen) {   
+    const MIN_Sayi = -2147483648
+    const MAX_Sayİ = 2147483647;   
+    if (bolen==0) return 0;
+    let i=0;   
+    sign1 = 1;
+    sign2 = 1;   
+    if (bolunen_sayi<0) { bolunen_sayi = -bolunen_sayi; sign1=-1;}
+    if (bolen<0) {bolen = -bolen; sign2=-1;}    
+    while (bolunen_sayi >= bolen) {           
+        let zaman = 1;
+        let diver = bolen;
+        while (diver + diver <= bolunen_sayi) {
+            diver += diver;
+            zaman += zaman;
+        }
+        i+=zaman;
+        bolunen_sayi-=diver; 
+    }
+    if (sign1+sign2 == 0) i = -i; 
+    if (i>MAX_Sayi) i = MAX_Sayi;
+    return i;
+};
+
+--------------------------------------------------------------------------------------------------------------------------
+Problemin Numarası : 39
+Problemin  Adı : Combination Sum
+Javascript Sonucu:
+Sayıya göre sonuç değişiklik göstermektedir.
+Javascript Kodları :
+var combinationSum = function(candidates, target) {
+    candidates.sort((a, b) => a - b);
+    var len = candidates.length;
+    var dp = [[[]]];
+    for (var sum = 1; sum <= target; sum++) {
+        dp[sum] = [];
+        for (var i = 0; i < len; i++) {
+            var currentValue = candidates[i];
+            if (currentValue > sum) break;
+            dp[sum - currentValue].forEach(item => {
+                if (item.length && item[item.length - 1] > currentValue) return;
+                dp[sum].push(item.concat([currentValue]))
+            });
+        }
+    }
+    return dp[target];
+};
+--------------------------------------------------------------------------------------------------------------------------
+Problemin Numarası : 49
+Problemin  Adı : Group Anagrams
+Javascript Sonucu:
+Sayıya göre sonuç değişiklik göstermektedir.
+Javascript Kodları :
+var grup_Anagramlari = function(strs) { 
+    let harita = new Harita(); 
+    for (let str of strs){
+        let key = str.split('').sort().join();
+        let arr = [];
+        if(harita.has(key)){
+            arr  = harita.get(key);
+        }
+        arr.push(str);
+        harita.set(key,arr);
+    }
+    let ans = [];
+    for (let c of harita.values()){
+        ans.push(c);
+    }
+    return ans;
+};
+
